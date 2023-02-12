@@ -8,21 +8,21 @@ use Mojo::Base 'Mojolicious::Plugin';
 use Crypt::Passphrase;
 
 sub register {
-    my (undef, $app, $config) = @_;
+	my (undef, $app, $config) = @_;
 
 	my $passphrase = Crypt::Passphrase->new(%{$config});
 
-    $app->helper(hash_password => sub {
+	$app->helper(hash_password => sub {
 		my ($c, @args) = @_;
 		return $passphrase->hash_password(@args);
-    });
+	});
 
-    $app->helper(verify_password => sub {
+	$app->helper(verify_password => sub {
 		my ($c, @args) = @_;
 		return $passphrase->verify_password(@args);
 	});
 
-    $app->helper(password_needs_rehash => sub {
+	$app->helper(password_needs_rehash => sub {
 		my ($c, @args) = @_;
 		return $passphrase->needs_rehash(@args);
 	});
