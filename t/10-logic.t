@@ -6,7 +6,7 @@ use utf8;
 
 use lib 't/lib';
 
-use Test::More tests => 14;
+use Test::More tests => 18;
 use Test::Mojo;
 use Mojolicious::Lite;
 use Encode;
@@ -22,7 +22,7 @@ get '/bc' => sub {
 get '/bv' => sub {
 	my $self = shift;
 	my ( $p, $c ) = map { $self->param($_) } qw/p c/;
-	my $ok = $self->bcrypt_validate($p, $c);
+	my $ok = $self->verify_password($p, $c);
 	$self->render(text => ($ok ? 'Pass' : 'Fail'));
 };
 
@@ -31,13 +31,13 @@ my @data = (
 	[ '$reversed$', ''],
 	[ '$reversed$drowssap', 'password'],
 	[ '$reversed$0', '0'],
-	[ encode('utf-8', '$reversed$арогаз-авон'), 'нова-загора'],
+	[ '$reversed$арогаз-авон', 'нова-загора'],
 );
 
 for my $row (@data) {
 	my ($hash, $password) = @{$row};
-	$t->get_ok("/bc?p=$password")->content_is(decode('utf-8', $hash));
-	$t->get_ok("/bv?p=$password&c=$hash", "Password $hash");
+	$t->get_ok("/bc?p=$password")->content_is($hash);
+	$t->get_ok("/bv?p=$password&c=$hash", "Password " . encode('utf-8', $hash))->content_is('Pass', "Pass for $hash");
 }
 
 my $password = 'big secret';
