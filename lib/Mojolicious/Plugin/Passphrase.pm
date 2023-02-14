@@ -44,7 +44,7 @@ sub register {
  sub startup {
    my $self = shift;
 
-   $self->plugin(Passphrase => { encoder => 'Argon2'});
+   $self->plugin(Passphrase => { encoder => 'Argon2' });
  }
 
 =head1 DESCRIPTION
@@ -75,7 +75,7 @@ Checks if a hash needs rehashing.
 
  if ($c->verify_password($plaintext_password, $crypted_password)) {
    if ($c->password_needs_rehash($crypted_password)) {
-     my $new_hash = c->hash_password($plaintext_password);
+     my $new_hash = $c->hash_password($plaintext_password);
      # store new hash to the database
    }
  }

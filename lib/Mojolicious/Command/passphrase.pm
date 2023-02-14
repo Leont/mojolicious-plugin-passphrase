@@ -36,5 +36,5 @@ C<Crypt::Passphrase> via a L<Mojolicious::Command>.
 If you are using L<Mojolicious::Plugin::Passphrase>, then this helper along
 with any settings you provided the plugin will be used to generate the crypted text:
 
-  # crypt using bcrypt helper
+  # crypt using passphrase helper
   ./myapp.pl passphrase password
